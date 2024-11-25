@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Dec 28 17:06:25 2023
 
-@author: sofia
-"""
 
 import streamlit as st
 #import json
@@ -71,10 +67,10 @@ display_comparaison(customer_res, idx_client, selected_cust_features)
 if st.sidebar.button('Run Prediction'):
     
     # url de l'API hébergé dans le cloud
-    # root_url_backend = 'https://api-predict.onrender.com' 
+    root_url_backend = 'https://projet-scoring-client.onrender.com' 
     
     # url de l'API sur l'ordi
-    root_url_backend = 'http://127.0.0.1:8000' 
+    # root_url_backend = 'http://127.0.0.1:8000' 
 
     
     # url des endpoints

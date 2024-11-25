@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Jan  1 00:03:39 2024
 
-@author: sofia
-"""
 
 import streamlit as st
 #import json
@@ -68,67 +64,7 @@ def display_prediction_class(response_predict):
 
     st.plotly_chart(fig)
     
-    
-def display_interpretability(response_interpret):
-    
-    res_interpret = response_interpret.json()["interpretation"]
-    
-    features, weights = zip(*res_interpret)
-
-    weights = list(weights)
-
-    features = list(features)
-    features = [x.split(" <=")[0] for x in features]
-
-    df_inter = pd.DataFrame({"features":features, "weights":weights})
-    df_inter["weights_abs"] = np.abs(df_inter["weights"].values)
-    df_inter = df_inter.sort_values(by="weights_abs",ascending=False)
-    df_inter_top = df_inter.iloc[0:5,:]
-    
-    """
-    fig, ax = plt.subplots(figsize=(8,5))
-    bars = ax.bar(df_inter_top['features'], df_inter_top['weights'], width=0.5)
-    
-    ax.set_xlabel('Features',fontsize=10)
-    ax.set_ylabel('Importance',fontsize=10)
-    
-    plt.xticks(rotation='vertical')
-    
-    # Display the bar chart using Streamlit
-    st.pyplot(fig)
-    """
-    
-    color_mapping = dict()
-    
-    for val in df_inter_top['features']:
         
-        val = df_inter_top[df_inter_top['features'] == val]["weights"].values[0]
-        
-        if val >= 0.0:
-            color = 'skyblue'
-        else:
-            color = 'red'
-        
-        color_mapping[val] = color
-        
-    legend_dict = {"Contribution to class 0":"red", "Contribution to class 1":"skyblue"}
-    
-    fig3 = plt.figure(num = 10, figsize=(8, 6))
-    sns.barplot(df_inter_top['features'], df_inter_top['weights'],palette=color_mapping.values())
-    
-    legend_labels = [plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=color, markersize=10, label=label)
-                 for label, color in legend_dict.items()]
-    
-    plt.legend(handles=legend_labels, title_fontsize='15')
-
-    plt.xlabel('Features')
-    plt.ylabel("Importance")
-    #plt.title('Distribution of '+feat_cat)
-    plt.xticks(rotation='vertical')
-    
-    # Display the count plot using st.pyplot
-    st.pyplot(fig3)
-    
 
 def process_one_hot_feats(customer_perso, cols):
     
